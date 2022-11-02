@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KittyClicker</title>
+    <link rel="stylesheet" href="dekor.css" />
+</head>
+
+<body>
+    <div class="container" id="app"></div>
+
+    <script>
+
+        //model
+        let points = 0;
+        let pointsPerClick = 1;
+        let kittyIndex = 0;
+        const kittydown = `<img src="img/down.png"/>`;
+        const kittymirror = `<img src="img/mirror.png"/>`;
+        const kittyleft = `<img src="img/left.png"/>`;
+        const kittyright = `<img src="img/right.png"/>`;
+        const kittyup = `<img src="img/up.png"/>`; 
+       
+        //controller
+        function doClick() {
+            points += pointsPerClick;
+            kittyIndex = 1 - kittyIndex;
+            updateView();
+        }
+
+        function buyUpgrade(numberadd, cost) {
+            if (points < cost) return;
+            points -= cost;
+            pointsPerClick += numberadd;
+            updateView();
+        }
+
+        function warning(){
+            alert("YIKES!");
+            const myInterval = setInterval(changeImage, 100);
+            updateView();
+        }
+        let indexOfChangeImage = 0;
+
+        function changeImage(){
+          
+            if (indexOfChangeImage == 0){
+                kittyIndex = kittydown;
+            }
+            if (indexOfChangeImage == 1){
+                kittyIndex = kittyleft;
+            }
+            if (indexOfChangeImage == 2){
+                kittyIndex = kittyup;
+            }
+            if (indexOfChangeImage == 3){
+                kittyIndex = kittyright;
+            }
+            if (indexOfChangeImage < 3){
+                
+                indexOfChangeImage++;
+            } else{
+                updateView();
+                return; 
+            }
+
+            console.log(indexOfChangeImage);
+           animation();
+           
+        }
+
+        //view
+        function animation(){
+            document.getElementById(`app`).innerHTML = /*HTML*/ `
+            ${kittyIndex}`;
+        }
+        updateView()
+        function updateView() {
+            let kitty = kittyIndex == 0 ? kittydown : kittymirror;
+            document.getElementById(`app`).innerHTML = /*HTML*/ `
+            <h1 class="maintitle">KITTYCLICKER2000</h1>
+            <div id="image" onclick="doClick()" class="cat">${kitty}</div>
+            <div id="pointsInfo" class="pointsnumber">${points}</div>
+            <div class="pleasework">
+                <button onclick="buyUpgrade(1, 10)" class="button" role="button"><span class="text"><br/>
+                    UPGRADE +1<br/><i> 10 kitties</span></button>
+                <button onclick="buyUpgrade(10, 100)" class="button" role="button"><span class="text"><br/>
+                    UPGRADE +10<br/> <i> 100 kitties</span></button>
+                <button onclick="buyUpgrade(100, 1000)" class="button" role="button"><span class="text"><br/>
+                    UPGRADE +100<br/><i> 1000 kitties</span></button>
+            </div>
+                <div class= "pleasework2">
+                    <button onclick="warning()" onclick="buyUpgrade(1000, 100000)" class="button" role="button"><span class="text">
+                    <br/>UNLIMITED KITTIES<br/>
+                    <i> Sure you wanna cheat?</span></button>
+                </div>
+            `;
+        }
+
+
+
+
+    </script>
+
+</body>
+
+</html>
